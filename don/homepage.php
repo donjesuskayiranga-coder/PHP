@@ -29,8 +29,7 @@ $username = htmlspecialchars($_SESSION['username']);
 
 <main class="main-content">
     <h1>Welcome back, <?= $username ?>!</h1>
-    <p>You're now logged in. This page is protected — anyone who tries to visit
-       without signing in will be redirected to the login page automatically.</p>
+    <p>You're now logged in. This page is protected — Feel free to explore anything you want.</p>
 </main>
 
 <footer class="site-footer">
