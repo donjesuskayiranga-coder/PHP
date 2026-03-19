@@ -17,6 +17,7 @@
         <span class="brand-name">YearOne</span>
     </div>
 
+    
     <h1>Sign up</h1>
     <p class="subtitle">Fill in the details below to get started</p>
 
