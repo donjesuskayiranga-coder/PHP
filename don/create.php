@@ -1,26 +1,24 @@
 <?php
 session_start();
-include 'connection.php';
 
+include 'connection.php';
 if (isset($_POST['submit'])) {
-    $firstname       = trim($_POST['firstname']);
-    $lastname        = trim($_POST['lastname']);
-    $email           = trim($_POST['email']);
-    $gender          = $_POST['gender'];
+    $firstname= trim($_POST['firstname']);
+    $lastname= trim($_POST['lastname']);
+    $email= trim($_POST['email']);
+    $gender= $_POST['gender'];
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare(
         "INSERT INTO users (fname, lname, email, password, gender) VALUES (?, ?, ?, ?, ?)"
     );
     $stmt->bind_param("sssss", $firstname, $lastname, $email, $hashed_password, $gender);
-
     if ($stmt->execute()) {
         header('Location: login.php?signup=success');
         exit();
     } else {
         $error = "Signup failed: " . $stmt->error;
     }
-
     $stmt->close();
     $conn->close();
 }
