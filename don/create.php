@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include 'connection.php';
 if (isset($_POST['submit'])) {
     $firstname= trim($_POST['firstname']);
@@ -8,7 +7,6 @@ if (isset($_POST['submit'])) {
     $email= trim($_POST['email']);
     $gender= $_POST['gender'];
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
     $stmt = $conn->prepare(
         "INSERT INTO users (fname, lname, email, password, gender) VALUES (?, ?, ?, ?, ?)"
     );
