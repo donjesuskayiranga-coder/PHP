@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include 'connection.php';
 if (isset($_POST['submit'])) {
     $firstname= trim($_POST['firstname']);
@@ -17,11 +18,14 @@ if (isset($_POST['submit'])) {
     } else {
         $error = "Signup failed: " . $stmt->error;
     }
+
     $stmt->close();
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
