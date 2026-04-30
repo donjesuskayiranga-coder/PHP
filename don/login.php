@@ -1,42 +1,47 @@
 <?php
 session_start();
 
-include 'connection.php';
-
-$error = '';
-
 if (isset($_SESSION['user_id'])) {
     header('Location: homepage.php');
     exit();
 }
 
+$error = '';
+
+include 'connection.php';
+
 if (isset($_POST['submit'])) {
     $email    = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, fname, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows === 1) {
-        $stmt->bind_result($id, $fname, $hashed_password);
-        $stmt->fetch();
-
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['user_id']  = $id;
-            $_SESSION['username'] = $fname;
-            header('Location: homepage.php');
-            exit();
-        } else {
-            $error = "Invalid email or password.";
-        }
+    if ($email === '' || $password === '') {
+        $error = 'Please enter both email and password.';
     } else {
-        $error = "Invalid email or password.";
-    }
+        try {
+            $stmt = $conn->prepare("SELECT id, fname, password FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
 
-    $stmt->close();
-    $conn->close();
+            if ($stmt->num_rows === 1) {
+                $stmt->bind_result($id, $fname, $hashed_password);
+                $stmt->fetch();
+
+                if (password_verify($password, $hashed_password)) {
+                    session_regenerate_id(true);
+                    $_SESSION['user_id']  = $id;
+                    $_SESSION['username'] = $fname;
+                    header('Location: homepage.php');
+                    exit();
+                }
+            }
+
+            $error = 'Invalid email or password.';
+            $stmt->close();
+        } catch (mysqli_sql_exception $e) {
+            $error = 'Login failed. Please make sure the users table exists.';
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -44,7 +49,7 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — YearOne</title>
+    <title>Login &mdash; YearOne</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -80,7 +85,7 @@ if (isset($_POST['submit'])) {
             <div class="password-wrapper">
                 <input type="password" id="password" name="password" placeholder="Your password" required>
                 <button type="button" class="toggle-pw" onclick="togglePassword()">
-                    <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin: "round">
+                    <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                         <circle cx="12" cy="12" r="3"/>
                     </svg>

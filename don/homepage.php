@@ -13,7 +13,7 @@ $username = htmlspecialchars($_SESSION['username']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage — YearOne</title>
+    <title>Homepage &mdash; YearOne</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -29,7 +29,8 @@ $username = htmlspecialchars($_SESSION['username']);
 
 <main class="main-content">
     <h1>Welcome back, <?= $username ?>!</h1>
-    <p>You're now logged in. This page is protected — Feel free to explore anything you want.</p>
+    <p>You're now logged in. This page is protected &mdash; feel free to explore anything you want.</p>
+    <p class="page-actions"><a href="read.php" class="primary-link">View users</a></p>
 </main>
 
 <footer class="site-footer">
